@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/filmes")
 public class FilmeController {
 
+    private static final String REDIRECT_FILMES = "redirect:/filmes";
+
     @Autowired
     private FilmeRepository repository;
 
@@ -28,7 +30,7 @@ public class FilmeController {
             var filme = repository.getReferenceById(id);
             model.addAttribute("filme", filme);
         }
-        return "filmes/formulario";
+        return REDIRECT_FILMES;
     }
 
     @GetMapping
@@ -42,7 +44,7 @@ public class FilmeController {
     public String cadastrarFilmes(DadosCadastroFilme dados) {
         var filme = new Filme(dados);
         repository.save(filme);
-        return "redirect:/filmes";
+        return REDIRECT_FILMES;
     }
 
     @PutMapping
@@ -50,13 +52,13 @@ public class FilmeController {
     public String alterarFilmes(DadosAlteracaoFilme dados) {
         var filme = repository.getReferenceById(dados.id());
         filme.atualizaDados(dados);
-        return "redirect:/filmes";
+        return REDIRECT_FILMES;
     }
 
     @DeleteMapping
     @Transactional
     public String removeFilme(Long id) {
         repository.deleteById(id);
-        return "redirect:/filmes";
+        return REDIRECT_FILMES;
     }
 }
